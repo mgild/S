@@ -39,7 +39,7 @@ bytemuck = "^1"
 clap = { version = "^4", features = ["derive"] }
 data-encoding = "^2"
 inquire = { version = "^0.7", default-features = false, features = ["crossterm"] }
-jupiter-amm-interface = { git = "https://github.com/jup-ag/jupiter-amm-interface.git" }
+jupiter-amm-interface = { git = "https://github.com/mgild/jupiter-amm-interface.git" }
 lazy_static = "^1"
 num-derive = ">=0.3"
 num-traits = ">=0.2"
@@ -65,13 +65,13 @@ solana-readonly-account = "^1.1"
 # Use ^1 for flexibility for library users, but lock to 1.17.6 for deploy.
 # To update versions, set solana-program and solana-program-test to `=<new-vers>`,
 # then restore `^1` after Cargo.lock is updated
-solana-account-decoder = "^1"
-solana-client = "^1"
-solana-program = "^1"
-solana-program-test = "^1"
-solana-rpc-client-api = "^1"
-solana-sdk = "^1"
-solana-transaction-status = "^1"
+solana-account-decoder = "^1, < 2"
+solana-client = "^1, < 2"
+solana-program = "^1, < 2"
+solana-program-test = "^1, < 2"
+solana-rpc-client-api = "^1, < 2"
+solana-sdk = "^1, < 2"
+solana-transaction-status = "^1, < 2"
 
 # sanctum-solana-utils
 # TODO: use the same commit for everything once all the *-lib libs are ready, requires refactor
