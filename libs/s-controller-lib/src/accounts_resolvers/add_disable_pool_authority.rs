@@ -17,7 +17,7 @@ pub struct AddDisablePoolAuthorityFreeArgs<S: ReadonlyAccountData + ReadonlyAcco
 
 impl<S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes> AddDisablePoolAuthorityFreeArgs<S> {
     pub fn resolve(&self) -> Result<AddDisablePoolAuthorityKeys, SControllerError> {
-        if *self.pool_state_acc.pubkey() != POOL_STATE_ID {
+        if self.pool_state_acc.pubkey_bytes() != POOL_STATE_ID.to_bytes() {
             return Err(SControllerError::IncorrectPoolState);
         }
 

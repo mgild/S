@@ -1,7 +1,7 @@
 use s_controller_interface::{
     EndRebalanceKeys, RebalanceRecord, SControllerError, StartRebalanceKeys,
 };
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwnerBytes, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, index_to_usize,
@@ -23,18 +23,18 @@ impl<
         S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
         L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
         R: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
     > EndRebalanceFreeArgs<S, L, R, M>
 {
     /// Returns (keys, dst_lst_index)
     pub fn resolve(self) -> Result<(EndRebalanceKeys, usize), SControllerError> {
-        if *self.pool_state.pubkey() != POOL_STATE_ID {
+        if self.pool_state.pubkey_bytes() != POOL_STATE_ID.to_bytes() {
             return Err(SControllerError::IncorrectPoolState);
         }
-        if *self.lst_state_list.pubkey() != LST_STATE_LIST_ID {
+        if self.lst_state_list.pubkey_bytes() != LST_STATE_LIST_ID.to_bytes() {
             return Err(SControllerError::IncorrectLstStateList);
         }
-        if *self.rebalance_record.pubkey() != REBALANCE_RECORD_ID {
+        if self.rebalance_record.pubkey_bytes() != REBALANCE_RECORD_ID.to_bytes() {
             return Err(SControllerError::IncorrectRebalanceRecord);
         }
 
@@ -50,9 +50,9 @@ impl<
         let dst_lst_index = index_to_usize(*dst_lst_index)?;
 
         let dst_lst_state =
-            try_match_lst_mint_on_list(*self.dst_lst_mint.pubkey(), list, dst_lst_index)?;
+            try_match_lst_mint_on_list(self.dst_lst_mint.pubkey_bytes().into(), list, dst_lst_index)?;
         let dst_pool_reserves =
-            create_pool_reserves_address(dst_lst_state, *self.dst_lst_mint.owner())?;
+            create_pool_reserves_address(dst_lst_state, self.dst_lst_mint.owner_bytes().into())?;
 
         Ok((
             EndRebalanceKeys {

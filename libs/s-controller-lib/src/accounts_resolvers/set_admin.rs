@@ -26,7 +26,7 @@ impl<S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes> SetAdminFreeArgs<S> {
             pool_state: pool_state_acc,
         } = self;
 
-        if *pool_state_acc.pubkey() != pool_state_id {
+        if pool_state_acc.pubkey_bytes() != pool_state_id.to_bytes() {
             return Err(SControllerError::IncorrectPoolState);
         }
 

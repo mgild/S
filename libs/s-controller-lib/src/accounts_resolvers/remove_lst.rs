@@ -1,6 +1,6 @@
 use s_controller_interface::{RemoveLstIxArgs, RemoveLstKeys, SControllerError};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwnerBytes, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, create_protocol_fee_accumulator_address,
@@ -15,7 +15,7 @@ use crate::{
 pub struct RemoveLstFreeArgs<
     S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
 > {
     pub lst_index: usize,
     pub refund_rent_to: Pubkey,
@@ -27,7 +27,7 @@ pub struct RemoveLstFreeArgs<
 impl<
         S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
         L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
     > RemoveLstFreeArgs<S, L, M>
 {
     pub fn resolve(self) -> Result<RemoveLstKeys, SControllerError> {
@@ -38,20 +38,20 @@ impl<
             lst_state_list: lst_state_list_account,
             lst_mint,
         } = self;
-        if *pool_state_account.pubkey() != POOL_STATE_ID {
+        if pool_state_account.pubkey_bytes() != POOL_STATE_ID.to_bytes() {
             return Err(SControllerError::IncorrectPoolState);
         }
-        if *lst_state_list_account.pubkey() != LST_STATE_LIST_ID {
+        if lst_state_list_account.pubkey_bytes() != LST_STATE_LIST_ID.to_bytes() {
             return Err(SControllerError::IncorrectLstStateList);
         }
         let lst_state_list_acc_data = lst_state_list_account.data();
         let lst_state_list = try_lst_state_list(&lst_state_list_acc_data)?;
 
-        let lst_state = try_match_lst_mint_on_list(*lst_mint.pubkey(), lst_state_list, lst_index)?;
+        let lst_state = try_match_lst_mint_on_list(lst_mint.pubkey_bytes().into(), lst_state_list, lst_index)?;
 
-        let pool_reserves = create_pool_reserves_address(lst_state, *lst_mint.owner())?;
+        let pool_reserves = create_pool_reserves_address(lst_state, lst_mint.owner_bytes().into())?;
         let protocol_fee_accumulator =
-            create_protocol_fee_accumulator_address(lst_state, *lst_mint.owner())?;
+            create_protocol_fee_accumulator_address(lst_state, lst_mint.owner_bytes().into())?;
 
         let pool_state_acc_data = pool_state_account.data();
         let pool_state = try_pool_state(&pool_state_acc_data)?;
@@ -59,13 +59,13 @@ impl<
         Ok(RemoveLstKeys {
             admin: pool_state.admin,
             refund_rent_to,
-            lst_mint: *lst_mint.pubkey(),
+            lst_mint: lst_mint.pubkey_bytes().into(),
             pool_reserves,
             protocol_fee_accumulator,
             protocol_fee_accumulator_auth: PROTOCOL_FEE_ID,
             pool_state: POOL_STATE_ID,
             lst_state_list: LST_STATE_LIST_ID,
-            lst_token_program: *lst_mint.owner(),
+            lst_token_program: lst_mint.owner_bytes().into(),
         })
     }
 }
@@ -91,7 +91,7 @@ pub struct RemoveLstPdas {
 impl<
         S: ReadonlyAccountData,
         L: ReadonlyAccountData,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
     > RemoveLstByMintFreeArgs<S, L, M>
 {
     /// Does not check identity of pool_state and lst_state_list
@@ -134,10 +134,10 @@ impl<
         let lst_state_list_deser = try_lst_state_list(&lst_state_list_acc_data)?;
 
         let (lst_index, lst_state) =
-            try_find_lst_mint_on_list(*lst_mint.pubkey(), lst_state_list_deser)?;
-        let pool_reserves = create_pool_reserves_address(lst_state, *lst_mint.owner())?;
+            try_find_lst_mint_on_list(lst_mint.pubkey_bytes().into(), lst_state_list_deser)?;
+        let pool_reserves = create_pool_reserves_address(lst_state, lst_mint.owner_bytes().into())?;
         let protocol_fee_accumulator =
-            create_protocol_fee_accumulator_address(lst_state, *lst_mint.owner())?;
+            create_protocol_fee_accumulator_address(lst_state, lst_mint.owner_bytes().into())?;
 
         let pool_state_acc_data = pool_state_account.data();
         let pool_state_deser = try_pool_state(&pool_state_acc_data)?;
@@ -146,13 +146,13 @@ impl<
             RemoveLstKeys {
                 admin: pool_state_deser.admin,
                 refund_rent_to,
-                lst_mint: *lst_mint.pubkey(),
+                lst_mint: lst_mint.pubkey_bytes().into(),
                 pool_reserves,
                 protocol_fee_accumulator,
                 protocol_fee_accumulator_auth,
                 pool_state,
                 lst_state_list,
-                lst_token_program: *lst_mint.owner(),
+                lst_token_program: lst_mint.owner_bytes().into(),
             },
             RemoveLstIxArgs {
                 lst_index: lst_index

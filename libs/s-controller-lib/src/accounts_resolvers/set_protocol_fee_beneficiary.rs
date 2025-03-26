@@ -12,7 +12,7 @@ pub struct SetProtocolFeeBeneficiaryFreeArgs<S> {
 
 impl<S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes> SetProtocolFeeBeneficiaryFreeArgs<S> {
     pub fn resolve(self) -> Result<SetProtocolFeeBeneficiaryKeys, SControllerError> {
-        if *self.pool_state.pubkey() != POOL_STATE_ID {
+        if self.pool_state.pubkey_bytes() != POOL_STATE_ID.to_bytes() {
             return Err(SControllerError::IncorrectPoolState);
         }
         self.resolve_with_pool_state_id(POOL_STATE_ID)

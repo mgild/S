@@ -49,7 +49,7 @@ impl<D: ReadonlyAccountData + ReadonlyAccountPubkeyBytes>
             signer: self.pool_admin()?,
             new_rebalance_authority: self.new_rebalance_authority,
         }
-        .resolve_with_pool_state_id(*self.pool_state.pubkey()))
+        .resolve_with_pool_state_id(self.pool_state.pubkey_bytes().into()))
     }
 
     pub fn resolve_current_rebalance_authority_with_pool_state_id(
@@ -59,7 +59,7 @@ impl<D: ReadonlyAccountData + ReadonlyAccountPubkeyBytes>
             signer: self.current_rebalance_authority()?,
             new_rebalance_authority: self.new_rebalance_authority,
         }
-        .resolve_with_pool_state_id(*self.pool_state.pubkey()))
+        .resolve_with_pool_state_id(self.pool_state.pubkey_bytes().into()))
     }
 }
 

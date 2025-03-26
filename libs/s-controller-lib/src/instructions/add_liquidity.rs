@@ -3,7 +3,7 @@ use s_controller_interface::{
     SControllerError,
 };
 use solana_program::{instruction::Instruction, program_error::ProgramError, pubkey::Pubkey};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwnerBytes, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     index_to_u32, ix_extend_with_pricing_program_price_lp_accounts,
@@ -86,7 +86,7 @@ pub fn add_liquidity_ix_full_for_prog(
 pub fn add_liquidity_ix_by_mint_full<
     S: ReadonlyAccountData,
     L: ReadonlyAccountData,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
 >(
     free_args: AddLiquidityByMintFreeArgs<S, L, M>,
     amts: AddLiquidityIxAmts,
@@ -104,7 +104,7 @@ pub fn add_liquidity_ix_by_mint_full<
 pub fn add_liquidity_ix_by_mint_full_for_prog<
     S: ReadonlyAccountData,
     L: ReadonlyAccountData,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
 >(
     program_id: Pubkey,
     free_args: AddLiquidityByMintFreeArgs<S, L, M>,

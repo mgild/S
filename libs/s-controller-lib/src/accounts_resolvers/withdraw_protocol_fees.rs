@@ -1,7 +1,7 @@
 use s_controller_interface::{SControllerError, WithdrawProtocolFeesKeys};
 use sanctum_token_lib::{MintWithTokenProgram};
 use solana_program::{program_error::ProgramError, pubkey::Pubkey};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwnerBytes, ReadonlyAccountPubkeyBytes};
 use spl_token::state;
 use spl_token_2022::extension::StateWithExtensions;
 
@@ -35,7 +35,7 @@ pub struct WithdrawProtocolFeesFreeArgs<S, W> {
 
 impl<
         S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
-        W: ReadonlyAccountData + ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        W: ReadonlyAccountData + ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
     > WithdrawProtocolFeesFreeArgs<S, W>
 {
     pub fn resolve(self) -> Result<WithdrawProtocolFeesKeys, ProgramError> {
@@ -44,7 +44,7 @@ impl<
             withdraw_to,
         } = self;
 
-        if *pool_state.pubkey() != POOL_STATE_ID {
+        if pool_state.pubkey_bytes() != POOL_STATE_ID.to_bytes() {
             return Err(SControllerError::IncorrectPoolState.into());
         }
 
@@ -52,14 +52,14 @@ impl<
         let (protocol_fee_accumulator, _protocol_fee_accumulator_bump) =
             find_protocol_fee_accumulator_address(FindLstPdaAtaKeys {
                 lst_mint,
-                token_program: *withdraw_to.owner(),
+                token_program: withdraw_to.owner_bytes().into(),
             });
         WithdrawProtocolFeesByMintFreeArgs {
             pool_state,
-            withdraw_to: *withdraw_to.pubkey(),
+            withdraw_to: withdraw_to.pubkey_bytes().into(),
             lst_mint: MintWithTokenProgram {
                 pubkey: lst_mint,
-                token_program: *withdraw_to.owner(),
+                token_program: withdraw_to.owner_bytes().into(),
             },
         }
         .resolve_with_pdas(WithdrawProtocolFeesPdas {
@@ -77,7 +77,7 @@ pub struct WithdrawProtocolFeesByMintFreeArgs<S, M> {
     pub withdraw_to: Pubkey,
 }
 
-impl<S: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes>
+impl<S: ReadonlyAccountData, M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes>
     WithdrawProtocolFeesByMintFreeArgs<S, M>
 {
     pub fn resolve_for_prog(
@@ -88,8 +88,8 @@ impl<S: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyByte
         let protocol_fee_accumulator = find_protocol_fee_accumulator_address_with_protocol_fee_id(
             protocol_fee_accumulator_auth,
             FindLstPdaAtaKeys {
-                lst_mint: *self.lst_mint.pubkey(),
-                token_program: *self.lst_mint.owner(),
+                lst_mint: self.lst_mint.pubkey_bytes().into(),
+                token_program: self.lst_mint.owner_bytes().into(),
             },
         )
         .0;
@@ -123,8 +123,8 @@ impl<S: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyByte
             protocol_fee_accumulator_auth,
             protocol_fee_beneficiary,
             withdraw_to,
-            token_program: *lst_mint.owner(),
-            lst_mint: *lst_mint.pubkey(),
+            token_program: lst_mint.owner_bytes().into(),
+            lst_mint: lst_mint.pubkey_bytes().into(),
         })
     }
 }

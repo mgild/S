@@ -28,10 +28,10 @@ impl<
     > RemoveDisablePoolAuthorityFreeArgs<S, L>
 {
     pub fn resolve(&self) -> Result<RemoveDisablePoolAuthorityKeys, SControllerError> {
-        if *self.pool_state_acc.pubkey() != POOL_STATE_ID {
+        if self.pool_state_acc.pubkey_bytes() != POOL_STATE_ID.to_bytes() {
             return Err(SControllerError::IncorrectPoolState);
         }
-        if *self.disable_pool_authority_list.pubkey() != DISABLE_POOL_AUTHORITY_LIST_ID {
+        if self.disable_pool_authority_list.pubkey_bytes() != DISABLE_POOL_AUTHORITY_LIST_ID.to_bytes() {
             return Err(SControllerError::IncorrectDisablePoolAuthorityList);
         }
 

@@ -35,10 +35,10 @@ impl<
             pool_state: pool_state_account,
             lst_state_list: lst_state_list_account,
         } = self;
-        if *pool_state_account.pubkey() != POOL_STATE_ID {
+        if pool_state_account.pubkey_bytes() != POOL_STATE_ID.to_bytes() {
             return Err(SControllerError::IncorrectPoolState);
         }
-        if *lst_state_list_account.pubkey() != LST_STATE_LIST_ID {
+        if lst_state_list_account.pubkey_bytes() != LST_STATE_LIST_ID.to_bytes() {
             return Err(SControllerError::IncorrectLstStateList);
         }
 

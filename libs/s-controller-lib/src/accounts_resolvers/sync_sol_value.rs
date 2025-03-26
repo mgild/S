@@ -1,6 +1,6 @@
 use s_controller_interface::{SControllerError, SyncSolValueKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwnerBytes, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, find_lst_state_list_address, find_pool_state_address,
@@ -11,7 +11,7 @@ use crate::{
 #[derive(Clone, Copy, Debug)]
 pub struct SyncSolValueFreeArgs<
     L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
 > {
     pub lst_index: usize,
     pub lst_state_list: L,
@@ -20,18 +20,18 @@ pub struct SyncSolValueFreeArgs<
 
 impl<
         L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
     > SyncSolValueFreeArgs<L, M>
 {
     pub fn resolve(self) -> Result<SyncSolValueKeys, SControllerError> {
-        if *self.lst_state_list.pubkey() != LST_STATE_LIST_ID {
+        if self.lst_state_list.pubkey_bytes() != LST_STATE_LIST_ID.to_bytes() {
             return Err(SControllerError::IncorrectLstStateList);
         }
         let lst_state_list_acc_data = self.lst_state_list.data();
         let list = try_lst_state_list(&lst_state_list_acc_data)?;
 
-        let lst_state = try_match_lst_mint_on_list(*self.lst_mint.pubkey(), list, self.lst_index)?;
-        let pool_reserves = create_pool_reserves_address(lst_state, *self.lst_mint.owner())?;
+        let lst_state = try_match_lst_mint_on_list(self.lst_mint.pubkey_bytes().into(), list, self.lst_index)?;
+        let pool_reserves = create_pool_reserves_address(lst_state, self.lst_mint.owner_bytes().into())?;
 
         Ok(SyncSolValueKeys {
             lst_mint: lst_state.mint,
@@ -56,7 +56,7 @@ pub struct SyncSolValuePdas {
     pub lst_state_list: Pubkey,
 }
 
-impl<L: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes>
+impl<L: ReadonlyAccountData, M: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes>
     SyncSolValueByMintFreeArgs<L, M>
 {
     /// Does not check identity of pool_state and lst_state_list
@@ -92,12 +92,12 @@ impl<L: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyByte
         let lst_state_list_acc_data = self.lst_state_list.data();
         let list = try_lst_state_list(&lst_state_list_acc_data)?;
 
-        let (lst_index, lst_state) = try_find_lst_mint_on_list(*self.lst_mint.pubkey(), list)?;
-        let pool_reserves = create_pool_reserves_address(lst_state, *self.lst_mint.owner())?;
+        let (lst_index, lst_state) = try_find_lst_mint_on_list(self.lst_mint.pubkey_bytes().into(), list)?;
+        let pool_reserves = create_pool_reserves_address(lst_state, self.lst_mint.owner_bytes().into())?;
 
         Ok((
             SyncSolValueKeys {
-                lst_mint: *self.lst_mint.pubkey(),
+                lst_mint: self.lst_mint.pubkey_bytes().into(),
                 pool_state,
                 lst_state_list,
                 pool_reserves,

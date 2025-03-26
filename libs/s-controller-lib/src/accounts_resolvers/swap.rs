@@ -1,6 +1,6 @@
 use s_controller_interface::{SControllerError, SwapExactInKeys, SwapExactOutKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwnerBytes, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, create_pool_reserves_address_with_pool_state_id,
@@ -12,8 +12,8 @@ use crate::{
 };
 
 pub struct SwapFreeArgs<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    SM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
     L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 > {
     pub src_lst_index: usize,
@@ -33,8 +33,8 @@ struct SwapComputedKeys {
 }
 
 impl<
-        SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
-        DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        SM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
+        DM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
         L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     > SwapFreeArgs<SM, DM, L>
 {
@@ -47,7 +47,7 @@ impl<
             dst_lst_index,
             ..
         } = self;
-        if *lst_state_list_account.pubkey() != LST_STATE_LIST_ID {
+        if lst_state_list_account.pubkey_bytes() != LST_STATE_LIST_ID.to_bytes() {
             return Err(SControllerError::IncorrectLstStateList);
         }
 
@@ -55,14 +55,14 @@ impl<
         let lst_state_list = try_lst_state_list(&lst_state_list_acc_data)?;
 
         let src_lst_state =
-            try_match_lst_mint_on_list(*src_lst_mint.pubkey(), lst_state_list, *src_lst_index)?;
-        let src_pool_reserves = create_pool_reserves_address(src_lst_state, *src_lst_mint.owner())?;
+            try_match_lst_mint_on_list(src_lst_mint.pubkey_bytes().into(), lst_state_list, *src_lst_index)?;
+        let src_pool_reserves = create_pool_reserves_address(src_lst_state, src_lst_mint.owner_bytes().into())?;
 
         let dst_lst_state =
-            try_match_lst_mint_on_list(*dst_lst_mint.pubkey(), lst_state_list, *dst_lst_index)?;
-        let dst_pool_reserves = create_pool_reserves_address(dst_lst_state, *dst_lst_mint.owner())?;
+            try_match_lst_mint_on_list(dst_lst_mint.pubkey_bytes().into(), lst_state_list, *dst_lst_index)?;
+        let dst_pool_reserves = create_pool_reserves_address(dst_lst_state, dst_lst_mint.owner_bytes().into())?;
         let protocol_fee_accumulator =
-            create_protocol_fee_accumulator_address(dst_lst_state, *dst_lst_mint.owner())?;
+            create_protocol_fee_accumulator_address(dst_lst_state, dst_lst_mint.owner_bytes().into())?;
 
         Ok(SwapComputedKeys {
             src_pool_reserves,
@@ -87,13 +87,13 @@ impl<
         } = self;
         Ok(SwapExactInKeys {
             signer: *signer,
-            src_lst_mint: *src_lst_mint.pubkey(),
-            dst_lst_mint: *dst_lst_mint.pubkey(),
+            src_lst_mint: src_lst_mint.pubkey_bytes().into(),
+            dst_lst_mint: dst_lst_mint.pubkey_bytes().into(),
             src_lst_acc: *src_lst_acc,
             dst_lst_acc: *dst_lst_acc,
             protocol_fee_accumulator,
-            src_lst_token_program: *src_lst_mint.owner(),
-            dst_lst_token_program: *dst_lst_mint.owner(),
+            src_lst_token_program: src_lst_mint.owner_bytes().into(),
+            dst_lst_token_program: dst_lst_mint.owner_bytes().into(),
             pool_state: POOL_STATE_ID,
             lst_state_list: LST_STATE_LIST_ID,
             src_pool_reserves,
@@ -117,13 +117,13 @@ impl<
         } = self;
         Ok(SwapExactOutKeys {
             signer: *signer,
-            src_lst_mint: *src_lst_mint.pubkey(),
-            dst_lst_mint: *dst_lst_mint.pubkey(),
+            src_lst_mint: src_lst_mint.pubkey_bytes().into(),
+            dst_lst_mint: dst_lst_mint.pubkey_bytes().into(),
             src_lst_acc: *src_lst_acc,
             dst_lst_acc: *dst_lst_acc,
             protocol_fee_accumulator,
-            src_lst_token_program: *src_lst_mint.owner(),
-            dst_lst_token_program: *dst_lst_mint.owner(),
+            src_lst_token_program: src_lst_mint.owner_bytes().into(),
+            dst_lst_token_program: dst_lst_mint.owner_bytes().into(),
             pool_state: POOL_STATE_ID,
             lst_state_list: LST_STATE_LIST_ID,
             src_pool_reserves,
@@ -136,8 +136,8 @@ impl<
 /// Suitable for use on client side.
 /// Does not check identity of lst_state_list
 pub struct SwapByMintsFreeArgs<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    SM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
     L: ReadonlyAccountData,
 > {
     pub signer: Pubkey,
@@ -149,8 +149,8 @@ pub struct SwapByMintsFreeArgs<
 }
 
 impl<
-        SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
-        DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        SM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
+        DM: ReadonlyAccountOwnerBytes + ReadonlyAccountPubkeyBytes,
         L: ReadonlyAccountData,
     > SwapByMintsFreeArgs<SM, DM, L>
 {
@@ -258,13 +258,13 @@ impl<
         Ok((
             SwapExactInKeys {
                 signer: *signer,
-                src_lst_mint: *src_lst_mint.pubkey(),
-                dst_lst_mint: *dst_lst_mint.pubkey(),
+                src_lst_mint: src_lst_mint.pubkey_bytes().into(),
+                dst_lst_mint: dst_lst_mint.pubkey_bytes().into(),
                 src_lst_acc: *src_lst_acc,
                 dst_lst_acc: *dst_lst_acc,
                 protocol_fee_accumulator,
-                src_lst_token_program: *src_lst_mint.owner(),
-                dst_lst_token_program: *dst_lst_mint.owner(),
+                src_lst_token_program: src_lst_mint.owner_bytes().into(),
+                dst_lst_token_program: dst_lst_mint.owner_bytes().into(),
                 pool_state: pdas.pool_state,
                 lst_state_list: pdas.lst_state_list,
                 src_pool_reserves,
@@ -309,13 +309,13 @@ impl<
         Ok((
             SwapExactOutKeys {
                 signer: *signer,
-                src_lst_mint: *src_lst_mint.pubkey(),
-                dst_lst_mint: *dst_lst_mint.pubkey(),
+                src_lst_mint: src_lst_mint.pubkey_bytes().into(),
+                dst_lst_mint: dst_lst_mint.pubkey_bytes().into(),
                 src_lst_acc: *src_lst_acc,
                 dst_lst_acc: *dst_lst_acc,
                 protocol_fee_accumulator,
-                src_lst_token_program: *src_lst_mint.owner(),
-                dst_lst_token_program: *dst_lst_mint.owner(),
+                src_lst_token_program: src_lst_mint.owner_bytes().into(),
+                dst_lst_token_program: dst_lst_mint.owner_bytes().into(),
                 pool_state: pdas.pool_state,
                 lst_state_list: pdas.lst_state_list,
                 src_pool_reserves,
@@ -352,25 +352,25 @@ impl<
         let lst_state_list = try_lst_state_list(&lst_state_list_acc_data)?;
 
         let (src_lst_index, src_lst_state) =
-            try_find_lst_mint_on_list(*src_lst_mint.pubkey(), lst_state_list)?;
+            try_find_lst_mint_on_list(src_lst_mint.pubkey_bytes().into(), lst_state_list)?;
         let src_pool_reserves = create_pool_reserves_address_with_pool_state_id(
             pool_state_id,
             src_lst_state,
-            *src_lst_mint.owner(),
+            src_lst_mint.owner_bytes().into(),
         )?;
 
         let (dst_lst_index, dst_lst_state) =
-            try_find_lst_mint_on_list(*dst_lst_mint.pubkey(), lst_state_list)?;
+            try_find_lst_mint_on_list(dst_lst_mint.pubkey_bytes().into(), lst_state_list)?;
         let dst_pool_reserves = create_pool_reserves_address_with_pool_state_id(
             pool_state_id,
             dst_lst_state,
-            *dst_lst_mint.owner(),
+            dst_lst_mint.owner_bytes().into(),
         )?;
         let protocol_fee_accumulator =
             create_protocol_fee_accumulator_address_with_protocol_fee_id(
                 protocol_fee_id,
                 dst_lst_state,
-                *dst_lst_mint.owner(),
+                dst_lst_mint.owner_bytes().into(),
             )?;
 
         Ok((
