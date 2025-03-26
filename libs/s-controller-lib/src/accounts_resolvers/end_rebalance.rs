@@ -1,7 +1,7 @@
 use s_controller_interface::{
     EndRebalanceKeys, RebalanceRecord, SControllerError, StartRebalanceKeys,
 };
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, index_to_usize,
@@ -20,10 +20,10 @@ pub struct EndRebalanceFreeArgs<S, L, R, M> {
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
-        R: ReadonlyAccountData + ReadonlyAccountPubkey,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        R: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > EndRebalanceFreeArgs<S, L, R, M>
 {
     /// Returns (keys, dst_lst_index)

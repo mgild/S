@@ -6,7 +6,7 @@ use solana_program::{
     program_error::ProgramError,
     pubkey::Pubkey,
 };
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{index_to_u32, SyncSolValueByMintFreeArgs};
 
@@ -48,7 +48,7 @@ pub fn sync_sol_value_ix_full_for_prog(
 
 pub fn sync_sol_value_ix_by_mint_full<
     L: ReadonlyAccountData,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 >(
     free_args: SyncSolValueByMintFreeArgs<L, M>,
     sol_value_calculator_accounts: &[AccountMeta],

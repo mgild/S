@@ -1,6 +1,6 @@
 use s_controller_interface::{SControllerError, SetSolValueCalculatorKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, find_lst_state_list_address, find_pool_state_address,
@@ -22,9 +22,9 @@ struct ResolveInner {
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > SetSolValueCalculatorFreeArgs<S, L, M>
 {
     pub fn resolve(&self) -> Result<SetSolValueCalculatorKeys, SControllerError> {
@@ -49,7 +49,7 @@ impl<
 impl<
         S: ReadonlyAccountData,
         L: ReadonlyAccountData,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > SetSolValueCalculatorFreeArgs<S, L, M>
 {
     pub fn resolve_for_prog(
@@ -106,7 +106,7 @@ pub struct SetSolValueCalculatorByMintFreeArgs<S, L, M> {
 impl<
         S: ReadonlyAccountData,
         L: ReadonlyAccountData,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > SetSolValueCalculatorByMintFreeArgs<S, L, M>
 {
     /// Returns (keys, lst_index)

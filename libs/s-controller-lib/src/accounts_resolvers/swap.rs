@@ -1,6 +1,6 @@
 use s_controller_interface::{SControllerError, SwapExactInKeys, SwapExactOutKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, create_pool_reserves_address_with_pool_state_id,
@@ -12,9 +12,9 @@ use crate::{
 };
 
 pub struct SwapFreeArgs<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 > {
     pub src_lst_index: usize,
     pub dst_lst_index: usize,
@@ -33,9 +33,9 @@ struct SwapComputedKeys {
 }
 
 impl<
-        SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-        DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
+        SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     > SwapFreeArgs<SM, DM, L>
 {
     fn compute_keys(&self) -> Result<SwapComputedKeys, SControllerError> {
@@ -136,8 +136,8 @@ impl<
 /// Suitable for use on client side.
 /// Does not check identity of lst_state_list
 pub struct SwapByMintsFreeArgs<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     L: ReadonlyAccountData,
 > {
     pub signer: Pubkey,
@@ -149,8 +149,8 @@ pub struct SwapByMintsFreeArgs<
 }
 
 impl<
-        SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-        DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
         L: ReadonlyAccountData,
     > SwapByMintsFreeArgs<SM, DM, L>
 {

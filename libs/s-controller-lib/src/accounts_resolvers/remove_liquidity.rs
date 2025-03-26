@@ -1,6 +1,6 @@
 use s_controller_interface::{RemoveLiquidityKeys, SControllerError};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, create_pool_reserves_address_with_pool_state_id,
@@ -13,9 +13,9 @@ use crate::{
 
 #[derive(Clone, Copy, Debug)]
 pub struct RemoveLiquidityFreeArgs<
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 > {
     pub lst_index: usize,
     pub signer: Pubkey,
@@ -27,9 +27,9 @@ pub struct RemoveLiquidityFreeArgs<
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > RemoveLiquidityFreeArgs<S, L, M>
 {
     pub fn resolve(self) -> Result<RemoveLiquidityKeys, SControllerError> {
@@ -81,7 +81,7 @@ impl<
 pub struct RemoveLiquidityByMintFreeArgs<
     S: ReadonlyAccountData,
     L: ReadonlyAccountData,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 > {
     pub signer: Pubkey,
     pub src_lp_acc: Pubkey,
@@ -94,7 +94,7 @@ pub struct RemoveLiquidityByMintFreeArgs<
 impl<
         S: ReadonlyAccountData,
         L: ReadonlyAccountData,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > RemoveLiquidityByMintFreeArgs<S, L, M>
 {
     /// Does not check identity of pool_state and lst_state_list

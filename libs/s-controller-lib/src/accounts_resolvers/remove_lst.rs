@@ -1,6 +1,6 @@
 use s_controller_interface::{RemoveLstIxArgs, RemoveLstKeys, SControllerError};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, create_protocol_fee_accumulator_address,
@@ -13,9 +13,9 @@ use crate::{
 /// are empty before calling
 #[derive(Clone, Copy, Debug)]
 pub struct RemoveLstFreeArgs<
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 > {
     pub lst_index: usize,
     pub refund_rent_to: Pubkey,
@@ -25,9 +25,9 @@ pub struct RemoveLstFreeArgs<
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > RemoveLstFreeArgs<S, L, M>
 {
     pub fn resolve(self) -> Result<RemoveLstKeys, SControllerError> {
@@ -91,7 +91,7 @@ pub struct RemoveLstPdas {
 impl<
         S: ReadonlyAccountData,
         L: ReadonlyAccountData,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > RemoveLstByMintFreeArgs<S, L, M>
 {
     /// Does not check identity of pool_state and lst_state_list

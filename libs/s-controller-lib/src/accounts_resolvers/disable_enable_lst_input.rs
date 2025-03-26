@@ -2,7 +2,7 @@ use s_controller_interface::{
     DisableLstInputKeys, EnableLstInputKeys, LstState, PoolState, SControllerError,
 };
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     find_lst_state_list_address, find_pool_state_address,
@@ -16,8 +16,8 @@ struct DisableEnableLstInputComputedKeys {
 }
 
 pub struct DisableEnableLstInputFreeArgs<
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 > {
     pub lst_index: usize,
     pub pool_state: S,
@@ -25,8 +25,8 @@ pub struct DisableEnableLstInputFreeArgs<
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     > DisableEnableLstInputFreeArgs<S, L>
 {
     fn compute_keys(&self) -> Result<DisableEnableLstInputComputedKeys, SControllerError> {

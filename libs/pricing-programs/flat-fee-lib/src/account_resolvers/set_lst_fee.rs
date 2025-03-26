@@ -1,6 +1,6 @@
 use flat_fee_interface::{FlatFeeError, ProgramState, SetLstFeeKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     pda::{FeeAccountFindPdaArgs, ProgramStateFindPdaArgs},
@@ -8,12 +8,12 @@ use crate::{
     utils::try_program_state,
 };
 
-pub struct SetLstFeeByMintFreeArgs<S: ReadonlyAccountPubkey + ReadonlyAccountData> {
+pub struct SetLstFeeByMintFreeArgs<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> {
     pub lst_mint: Pubkey,
     pub state_acc: S,
 }
 
-impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLstFeeByMintFreeArgs<S> {
+impl<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> SetLstFeeByMintFreeArgs<S> {
     pub fn resolve(self) -> Result<SetLstFeeKeys, FlatFeeError> {
         self.resolve_inner(flat_fee_program::STATE_ID, flat_fee_program::ID)
     }
@@ -36,7 +36,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLstFeeByMintFreeArgs<S> 
             state_acc,
         } = self;
 
-        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
+        if state_acc.pubkey_bytes() != state_id.to_bytes() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 
@@ -57,12 +57,12 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLstFeeByMintFreeArgs<S> 
     }
 }
 
-pub struct SetLstFeeFreeArgs<S: ReadonlyAccountPubkey + ReadonlyAccountData> {
+pub struct SetLstFeeFreeArgs<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> {
     pub fee_acc: Pubkey,
     pub state_acc: S,
 }
 
-impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLstFeeFreeArgs<S> {
+impl<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> SetLstFeeFreeArgs<S> {
     pub fn resolve(self) -> Result<SetLstFeeKeys, FlatFeeError> {
         self.resolve_inner(flat_fee_program::STATE_ID)
     }
@@ -81,7 +81,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLstFeeFreeArgs<S> {
             state_acc,
         } = self;
 
-        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
+        if state_acc.pubkey_bytes() != state_id.to_bytes() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 

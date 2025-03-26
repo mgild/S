@@ -1182,17 +1182,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "derive_more"
-version = "0.99.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3da29a38df43d6f156149c9b43ded5e018ddff2a855cf2cfd62e8cd7d079c69f"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.100",
-]
-
-[[package]]
 name = "dialoguer"
 version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1473,7 +1462,7 @@ dependencies = [
  "sanctum-system-program-lib",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "system_program_interface",
  "test-utils",
@@ -1491,7 +1480,7 @@ dependencies = [
  "sanctum-macros",
  "sanctum-token-ratio",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "static_assertions",
  "test-utils",
 ]
@@ -1678,7 +1667,7 @@ dependencies = [
  "generic_pool_calculator_interface",
  "proptest",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "static_assertions",
  "test-utils",
 ]
@@ -1698,7 +1687,7 @@ dependencies = [
  "sanctum-token-lib",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "spl-stake-pool-keys",
  "system_program_interface",
@@ -2421,7 +2410,7 @@ dependencies = [
  "sol-value-calculator-onchain",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "test-utils",
  "tokio",
@@ -2441,7 +2430,7 @@ dependencies = [
  "sanctum-token-ratio",
  "sol-value-calculator-lib",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
 ]
 
 [[package]]
@@ -2549,7 +2538,7 @@ dependencies = [
  "sol-value-calculator-onchain",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "test-utils",
  "tokio",
@@ -3851,7 +3840,7 @@ dependencies = [
  "sol_value_calculator_interface",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "spl-associated-token-account",
  "spl-calculator-lib",
@@ -3878,9 +3867,10 @@ dependencies = [
  "sanctum-token-lib",
  "sanctum-token-ratio",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "spl-associated-token-account",
  "spl-token 4.0.0",
+ "spl-token-2022",
  "spl-token-metadata-interface 0.3.5",
  "static_assertions",
 ]
@@ -3949,7 +3939,7 @@ dependencies = [
  "serde_json",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "spl-calculator-lib",
  "spl-token 4.0.0",
@@ -3967,7 +3957,7 @@ dependencies = [
  "flat_fee_interface",
  "pricing_programs_interface",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
 ]
 
 [[package]]
@@ -3989,7 +3979,7 @@ dependencies = [
  "sol-value-calculator-lib",
  "sol_value_calculator_interface",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "spl-calculator-lib",
  "wsol-calculator-lib",
  "wsol-keys",
@@ -4023,7 +4013,7 @@ version = "0.1.0"
 source = "git+https://github.com/mgild/sanctum-solana-utils.git#f320efb0c95684f08a775438318da036b4c38967"
 dependencies = [
  "solana-program",
- "solana-readonly-account 2.0.0",
+ "solana-readonly-account",
  "spl_associated_token_account_interface",
 ]
 
@@ -4067,7 +4057,7 @@ version = "0.1.0"
 dependencies = [
  "sanctum-token-lib",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "spl-token 4.0.0",
  "spl-token-2022",
 ]
@@ -4089,7 +4079,7 @@ dependencies = [
  "solana-account-decoder",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 2.0.0",
+ "solana-readonly-account",
  "solana-sdk",
  "spl-token 8.0.0",
 ]
@@ -4108,7 +4098,7 @@ dependencies = [
  "sol-value-calculator-onchain",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "spl-calculator-lib",
  "spl_calculator_interface",
@@ -4130,7 +4120,7 @@ dependencies = [
  "sol-value-calculator-onchain",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "spl-calculator-lib",
  "spl_calculator_interface",
@@ -4160,7 +4150,7 @@ version = "0.1.0"
 source = "git+https://github.com/mgild/sanctum-solana-utils.git#f320efb0c95684f08a775438318da036b4c38967"
 dependencies = [
  "solana-program",
- "solana-readonly-account 2.0.0",
+ "solana-readonly-account",
  "system_program_interface",
 ]
 
@@ -4170,7 +4160,7 @@ version = "0.1.0"
 source = "git+https://github.com/mgild/sanctum-solana-utils.git#f320efb0c95684f08a775438318da036b4c38967"
 dependencies = [
  "solana-program",
- "solana-readonly-account 2.0.0",
+ "solana-readonly-account",
  "spl_token_interface",
 ]
 
@@ -5433,17 +5423,6 @@ dependencies = [
 
 [[package]]
 name = "solana-readonly-account"
-version = "1.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4a9f19d3af4e98f2d76e25d55935ddb1c0e3cfc458a46be9fba48fe1558706c2"
-dependencies = [
- "derive_more",
- "solana-program",
- "solana-sdk",
-]
-
-[[package]]
-name = "solana-readonly-account"
 version = "2.0.0"
 source = "git+https://github.com/mgild/sanctum-solana-utils.git#f320efb0c95684f08a775438318da036b4c38967"
 dependencies = [
@@ -6182,7 +6161,7 @@ dependencies = [
  "sol-value-calculator-onchain",
  "solana-program",
  "solana-program-test",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "solana-sdk",
  "spl-calculator-lib",
  "spl_calculator_interface",
@@ -6204,7 +6183,7 @@ dependencies = [
  "sanctum-token-ratio",
  "sol-value-calculator-lib",
  "solana-program",
- "solana-readonly-account 1.2.1",
+ "solana-readonly-account",
  "spl-stake-pool-keys",
  "spl_calculator_interface",
 ]

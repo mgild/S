@@ -1,6 +1,6 @@
 use s_controller_interface::{PoolState, SControllerError, StartRebalanceKeys};
 use solana_program::{pubkey::Pubkey, system_program, sysvar};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, find_lst_state_list_address, find_pool_state_address,
@@ -32,10 +32,10 @@ impl RebalancePdas {
 
 #[derive(Clone, Copy, Debug)]
 pub struct StartRebalanceFreeArgs<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 > {
     pub withdraw_to: Pubkey,
     pub src_lst_index: usize,
@@ -47,10 +47,10 @@ pub struct StartRebalanceFreeArgs<
 }
 
 impl<
-        SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-        DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
+        SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     > StartRebalanceFreeArgs<SM, DM, S, L>
 {
     pub fn resolve(self) -> Result<StartRebalanceKeys, SControllerError> {
@@ -98,10 +98,10 @@ impl<
 /// Suitable for use on client side
 #[derive(Clone, Copy, Debug)]
 pub struct StartRebalanceByMintsFreeArgs<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 > {
     pub withdraw_to: Pubkey,
     pub lst_state_list: L,
@@ -111,10 +111,10 @@ pub struct StartRebalanceByMintsFreeArgs<
 }
 
 impl<
-        SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-        DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
+        SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     > StartRebalanceByMintsFreeArgs<SM, DM, S, L>
 {
     pub fn resolve(

@@ -3,7 +3,7 @@ use s_controller_interface::{
     StartRebalanceIxData, StartRebalanceKeys,
 };
 use solana_program::{instruction::Instruction, program_error::ProgramError, pubkey::Pubkey};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     index_to_u32, SrcDstLstIndexes, SrcDstLstSolValueCalcAccountSuffixes,
@@ -81,10 +81,10 @@ pub fn start_rebalance_ix_full_for_prog(
 }
 
 pub fn start_rebalance_ix_by_mints_full<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 >(
     free_args: StartRebalanceByMintsFreeArgs<SM, DM, S, L>,
     lst_amts: StartRebalanceIxLstAmts,
@@ -110,10 +110,10 @@ pub fn start_rebalance_ix_by_mints_full<
 }
 
 pub fn start_rebalance_ix_by_mints_full_for_prog<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 >(
     program_id: Pubkey,
     free_args: StartRebalanceByMintsFreeArgs<SM, DM, S, L>,

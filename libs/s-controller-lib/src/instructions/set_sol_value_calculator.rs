@@ -7,7 +7,7 @@ use solana_program::{
     program_error::ProgramError,
     pubkey::Pubkey,
 };
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     index_to_u32, ix_extend_with_sol_value_calculator_accounts, SetSolValueCalculatorByMintFreeArgs,
@@ -33,7 +33,7 @@ pub fn set_sol_value_calculator_ix_full(
 pub fn set_sol_value_calculator_ix_by_mint_full<
     S: ReadonlyAccountData,
     L: ReadonlyAccountData,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 >(
     free_args: &SetSolValueCalculatorByMintFreeArgs<S, L, M>,
     sol_value_calculator_accounts: &[AccountMeta],
@@ -52,7 +52,7 @@ pub fn set_sol_value_calculator_ix_by_mint_full<
 pub fn set_sol_value_calculator_ix_by_mint_full_with_program_id<
     S: ReadonlyAccountData,
     L: ReadonlyAccountData,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 >(
     program_id: Pubkey,
     free_args: &SetSolValueCalculatorByMintFreeArgs<S, L, M>,

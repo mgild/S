@@ -1,14 +1,14 @@
 use flat_fee_interface::{FlatFeeError, ProgramState, SetLpWithdrawalFeeKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{pda::ProgramStateFindPdaArgs, program as flat_fee_program, utils::try_program_state};
 
-pub struct SetLpWithdrawalFeeFreeArgs<S: ReadonlyAccountPubkey + ReadonlyAccountData> {
+pub struct SetLpWithdrawalFeeFreeArgs<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> {
     pub state_acc: S,
 }
 
-impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLpWithdrawalFeeFreeArgs<S> {
+impl<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> SetLpWithdrawalFeeFreeArgs<S> {
     pub fn resolve(self) -> Result<SetLpWithdrawalFeeKeys, FlatFeeError> {
         self.resolve_inner(flat_fee_program::STATE_ID)
     }
@@ -27,7 +27,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLpWithdrawalFeeFreeArgs<
     fn resolve_inner(self, state_id: Pubkey) -> Result<SetLpWithdrawalFeeKeys, FlatFeeError> {
         let SetLpWithdrawalFeeFreeArgs { state_acc } = self;
 
-        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
+        if state_acc.pubkey_bytes() != state_id.to_bytes() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 

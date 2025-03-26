@@ -1,6 +1,6 @@
 use s_controller_interface::{AddDisablePoolAuthorityKeys, SControllerError};
 use solana_program::{pubkey::Pubkey, system_program};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     find_disable_pool_authority_list_address, find_pool_state_address,
@@ -9,13 +9,13 @@ use crate::{
 };
 
 #[derive(Clone, Copy, Debug)]
-pub struct AddDisablePoolAuthorityFreeArgs<S: ReadonlyAccountData + ReadonlyAccountPubkey> {
+pub struct AddDisablePoolAuthorityFreeArgs<S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes> {
     pub payer: Pubkey,
     pub new_authority: Pubkey,
     pub pool_state_acc: S,
 }
 
-impl<S: ReadonlyAccountData + ReadonlyAccountPubkey> AddDisablePoolAuthorityFreeArgs<S> {
+impl<S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes> AddDisablePoolAuthorityFreeArgs<S> {
     pub fn resolve(&self) -> Result<AddDisablePoolAuthorityKeys, SControllerError> {
         if *self.pool_state_acc.pubkey() != POOL_STATE_ID {
             return Err(SControllerError::IncorrectPoolState);

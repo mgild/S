@@ -1,7 +1,9 @@
 use s_controller_interface::{SControllerError, WithdrawProtocolFeesKeys};
-use sanctum_token_lib::{token_account_mint, MintWithTokenProgram};
+use sanctum_token_lib::{MintWithTokenProgram};
 use solana_program::{program_error::ProgramError, pubkey::Pubkey};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
+use spl_token::state;
+use spl_token_2022::extension::StateWithExtensions;
 
 use crate::{
     find_pool_state_address, find_protocol_fee_accumulator_address,
@@ -9,6 +11,14 @@ use crate::{
     program::{POOL_STATE_ID, PROTOCOL_FEE_ID},
     try_pool_state, FindLstPdaAtaKeys,
 };
+
+pub fn token_account_mint<D: ReadonlyAccountData>(
+    token_account: D,
+) -> Result<Pubkey, ProgramError> {
+    let data = token_account.data();
+    let state = StateWithExtensions::<spl_token_2022::state::Account>::unpack(&data)?;
+    Ok(state.base.mint)
+}
 
 #[derive(Clone, Copy, Debug)]
 pub struct WithdrawProtocolFeesPdas {
@@ -24,8 +34,8 @@ pub struct WithdrawProtocolFeesFreeArgs<S, W> {
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        W: ReadonlyAccountData + ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        W: ReadonlyAccountData + ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > WithdrawProtocolFeesFreeArgs<S, W>
 {
     pub fn resolve(self) -> Result<WithdrawProtocolFeesKeys, ProgramError> {
@@ -67,7 +77,7 @@ pub struct WithdrawProtocolFeesByMintFreeArgs<S, M> {
     pub withdraw_to: Pubkey,
 }
 
-impl<S: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkey>
+impl<S: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes>
     WithdrawProtocolFeesByMintFreeArgs<S, M>
 {
     pub fn resolve_for_prog(

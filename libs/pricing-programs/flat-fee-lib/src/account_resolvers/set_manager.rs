@@ -1,15 +1,15 @@
 use flat_fee_interface::{FlatFeeError, ProgramState, SetManagerKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{pda::ProgramStateFindPdaArgs, program as flat_fee_program, utils::try_program_state};
 
-pub struct SetManagerFreeArgs<S: ReadonlyAccountPubkey + ReadonlyAccountData> {
+pub struct SetManagerFreeArgs<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> {
     pub new_manager: Pubkey,
     pub state_acc: S,
 }
 
-impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetManagerFreeArgs<S> {
+impl<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> SetManagerFreeArgs<S> {
     pub fn resolve(self) -> Result<SetManagerKeys, FlatFeeError> {
         self.resolve_inner(flat_fee_program::STATE_ID)
     }
@@ -28,7 +28,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetManagerFreeArgs<S> {
             state_acc,
         } = self;
 
-        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
+        if state_acc.pubkey_bytes() != state_id.to_bytes() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 

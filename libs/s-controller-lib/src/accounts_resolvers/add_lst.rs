@@ -1,6 +1,6 @@
 use s_controller_interface::{AddLstKeys, SControllerError};
 use solana_program::{pubkey::Pubkey, system_program};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     find_lst_state_list_address, find_pool_reserves_address_with_pool_state_id,
@@ -31,8 +31,8 @@ struct ResolveInner {
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > AddLstFreeArgs<S, M>
 {
     pub fn resolve(self) -> Result<(AddLstKeys, LstStateBumps), SControllerError> {
@@ -47,7 +47,7 @@ impl<
     }
 }
 
-impl<S: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkey> AddLstFreeArgs<S, M> {
+impl<S: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes> AddLstFreeArgs<S, M> {
     pub fn resolve_for_prog(
         self,
         program_id: Pubkey,

@@ -1,6 +1,6 @@
 use s_controller_interface::{SControllerError, SyncSolValueKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, find_lst_state_list_address, find_pool_state_address,
@@ -10,8 +10,8 @@ use crate::{
 
 #[derive(Clone, Copy, Debug)]
 pub struct SyncSolValueFreeArgs<
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 > {
     pub lst_index: usize,
     pub lst_state_list: L,
@@ -19,8 +19,8 @@ pub struct SyncSolValueFreeArgs<
 }
 
 impl<
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > SyncSolValueFreeArgs<L, M>
 {
     pub fn resolve(self) -> Result<SyncSolValueKeys, SControllerError> {
@@ -56,7 +56,7 @@ pub struct SyncSolValuePdas {
     pub lst_state_list: Pubkey,
 }
 
-impl<L: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkey>
+impl<L: ReadonlyAccountData, M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes>
     SyncSolValueByMintFreeArgs<L, M>
 {
     /// Does not check identity of pool_state and lst_state_list

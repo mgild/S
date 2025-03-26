@@ -1,6 +1,6 @@
 use s_controller_interface::{AddLiquidityKeys, SControllerError};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     create_pool_reserves_address, create_pool_reserves_address_with_pool_state_id,
@@ -13,9 +13,9 @@ use crate::{
 
 #[derive(Clone, Copy, Debug)]
 pub struct AddLiquidityFreeArgs<
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 > {
     pub lst_index: usize,
     pub signer: Pubkey,
@@ -27,9 +27,9 @@ pub struct AddLiquidityFreeArgs<
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > AddLiquidityFreeArgs<S, L, M>
 {
     pub fn resolve(self) -> Result<AddLiquidityKeys, SControllerError> {
@@ -81,7 +81,7 @@ impl<
 pub struct AddLiquidityByMintFreeArgs<
     S: ReadonlyAccountData,
     L: ReadonlyAccountData,
-    M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
 > {
     pub signer: Pubkey,
     pub src_lst_acc: Pubkey,
@@ -94,7 +94,7 @@ pub struct AddLiquidityByMintFreeArgs<
 impl<
         S: ReadonlyAccountData,
         L: ReadonlyAccountData,
-        M: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+        M: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     > AddLiquidityByMintFreeArgs<S, L, M>
 {
     /// Does not check identity of pool_state and lst_state_list

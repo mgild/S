@@ -1,6 +1,6 @@
 use flat_fee_interface::{FlatFeeError, ProgramState, RemoveLstKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     pda::{FeeAccountFindPdaArgs, ProgramStateFindPdaArgs},
@@ -8,13 +8,13 @@ use crate::{
     utils::try_program_state,
 };
 
-pub struct RemoveLstFreeArgs<S: ReadonlyAccountPubkey + ReadonlyAccountData> {
+pub struct RemoveLstFreeArgs<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> {
     pub refund_rent_to: Pubkey,
     pub lst_mint: Pubkey,
     pub state_acc: S,
 }
 
-impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> RemoveLstFreeArgs<S> {
+impl<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData> RemoveLstFreeArgs<S> {
     /// Uses find_program_address().
     /// Ok to be inefficient since this is admin-facing
     pub fn resolve(self) -> Result<RemoveLstKeys, FlatFeeError> {
@@ -40,7 +40,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> RemoveLstFreeArgs<S> {
             state_acc,
         } = self;
 
-        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
+        if state_acc.pubkey_bytes() != state_id.to_bytes() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 

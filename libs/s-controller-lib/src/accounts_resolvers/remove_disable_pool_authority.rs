@@ -2,7 +2,7 @@ use s_controller_interface::{
     RemoveDisablePoolAuthorityIxArgs, RemoveDisablePoolAuthorityKeys, SControllerError,
 };
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     find_disable_pool_authority_list_address, find_pool_state_address, index_to_u32,
@@ -12,8 +12,8 @@ use crate::{
 
 #[derive(Clone, Copy, Debug)]
 pub struct RemoveDisablePoolAuthorityFreeArgs<
-    S: ReadonlyAccountData + ReadonlyAccountPubkey,
-    L: ReadonlyAccountData + ReadonlyAccountPubkey,
+    S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+    L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
 > {
     pub index: usize,
     pub refund_rent_to: Pubkey,
@@ -23,8 +23,8 @@ pub struct RemoveDisablePoolAuthorityFreeArgs<
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     > RemoveDisablePoolAuthorityFreeArgs<S, L>
 {
     pub fn resolve(&self) -> Result<RemoveDisablePoolAuthorityKeys, SControllerError> {
@@ -64,8 +64,8 @@ pub struct RemoveDisablePoolAuthorityByPubkeyFreeArgs<S, L> {
 }
 
 impl<
-        S: ReadonlyAccountData + ReadonlyAccountPubkey,
-        L: ReadonlyAccountData + ReadonlyAccountPubkey,
+        S: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
+        L: ReadonlyAccountData + ReadonlyAccountPubkeyBytes,
     > RemoveDisablePoolAuthorityByPubkeyFreeArgs<S, L>
 {
     pub fn resolve(

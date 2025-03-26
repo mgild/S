@@ -7,7 +7,7 @@ use solana_program::{
     program_error::ProgramError,
     pubkey::Pubkey,
 };
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 
 use crate::{
     index_to_u32, ix_extend_with_pricing_program_price_swap_accounts,
@@ -101,8 +101,8 @@ pub struct SwapExactOutAmounts {
 }
 
 pub fn swap_exact_out_ix_by_mint_full<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     L: ReadonlyAccountData,
 >(
     free_args: SwapByMintsFreeArgs<SM, DM, L>,
@@ -141,8 +141,8 @@ pub fn swap_exact_out_ix_by_mint_full<
 }
 
 pub fn swap_exact_out_ix_by_mint_full_for_prog<
-    SM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
-    DM: ReadonlyAccountOwner + ReadonlyAccountPubkey,
+    SM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
+    DM: ReadonlyAccountOwner + ReadonlyAccountPubkeyBytes,
     L: ReadonlyAccountData,
 >(
     program_id: Pubkey,

@@ -1,6 +1,6 @@
 use s_controller_interface::{SControllerError, SetRebalanceAuthorityKeys};
 use solana_program::pubkey::Pubkey;
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountPubkeyBytes};
 
 use crate::{find_pool_state_address, program::POOL_STATE_ID, try_pool_state};
 
@@ -39,7 +39,7 @@ pub struct KnownAuthoritySetRebalanceAuthorityFreeArgs<D> {
     pub pool_state: D,
 }
 
-impl<D: ReadonlyAccountData + ReadonlyAccountPubkey>
+impl<D: ReadonlyAccountData + ReadonlyAccountPubkeyBytes>
     KnownAuthoritySetRebalanceAuthorityFreeArgs<D>
 {
     pub fn resolve_pool_admin_with_pool_state_id(
