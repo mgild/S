@@ -28,7 +28,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetManagerFreeArgs<S> {
             state_acc,
         } = self;
 
-        if *state_acc.pubkey() != state_id {
+        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 

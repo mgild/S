@@ -1,8 +1,14 @@
 //! TODO: stuff in here should probably be moved to sanctum-token-lib
 
-use sanctum_token_lib::mint_supply;
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountInfo};
 use solana_program::{account_info::AccountInfo, program_error::ProgramError, pubkey::Pubkey};
 use spl_token_2022::extension::StateWithExtensions;
+
+pub fn mint_supply<D: ReadonlyAccountData>(mint_account: D) -> Result<u64, ProgramError> {
+    let data = mint_account.data();
+    let state = StateWithExtensions::<spl_token_2022::state::Mint>::unpack(&data)?;
+    Ok(state.base.supply)
+}
 
 pub fn verify_tokenkeg_or_22_mint(mint: &AccountInfo) -> Result<(), ProgramError> {
     if *mint.owner != spl_token::ID && *mint.owner != spl_token_2022::ID {

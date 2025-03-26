@@ -27,7 +27,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLpWithdrawalFeeFreeArgs<
     fn resolve_inner(self, state_id: Pubkey) -> Result<SetLpWithdrawalFeeKeys, FlatFeeError> {
         let SetLpWithdrawalFeeFreeArgs { state_acc } = self;
 
-        if *state_acc.pubkey() != state_id {
+        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 

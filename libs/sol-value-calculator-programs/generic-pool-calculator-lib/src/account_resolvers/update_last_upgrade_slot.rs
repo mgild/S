@@ -22,10 +22,10 @@ impl<
     pub fn resolve<P: GenericPoolSolValCalc>(
         self,
     ) -> Result<UpdateLastUpgradeSlotKeys, GenericPoolCalculatorError> {
-        if *self.state.pubkey() != P::CALCULATOR_STATE_PDA {
+        if *self.state.pubkey() != P::CALCULATOR_STATE_PDA.to_string().parse().unwrap() {
             return Err(GenericPoolCalculatorError::WrongCalculatorStatePda);
         }
-        if *self.pool_program.pubkey() != P::POOL_PROGRAM_ID {
+        if *self.pool_program.pubkey() != P::POOL_PROGRAM_ID.to_string().parse().unwrap() {
             return Err(GenericPoolCalculatorError::WrongPoolProgram);
         }
 
@@ -53,7 +53,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> UpdateLastUpgradeSlotFreeAr
     pub fn resolve<P: GenericPoolSolValCalc>(
         self,
     ) -> Result<UpdateLastUpgradeSlotKeys, GenericPoolCalculatorError> {
-        if *self.state.pubkey() != P::CALCULATOR_STATE_PDA {
+        if *self.state.pubkey() != P::CALCULATOR_STATE_PDA.to_string().parse().unwrap() {
             return Err(GenericPoolCalculatorError::WrongCalculatorStatePda);
         }
 

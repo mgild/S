@@ -36,7 +36,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLstFeeByMintFreeArgs<S> 
             state_acc,
         } = self;
 
-        if *state_acc.pubkey() != state_id {
+        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 
@@ -81,7 +81,7 @@ impl<S: ReadonlyAccountPubkey + ReadonlyAccountData> SetLstFeeFreeArgs<S> {
             state_acc,
         } = self;
 
-        if *state_acc.pubkey() != state_id {
+        if *state_acc.pubkey() != state_id.to_string().parse().unwrap() {
             return Err(FlatFeeError::IncorrectProgramState);
         }
 
