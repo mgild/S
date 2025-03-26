@@ -5,7 +5,7 @@ use generic_pool_calculator_lib::{
     GenericPoolSolValCalc,
 };
 use solana_program::{instruction::AccountMeta, pubkey::Pubkey};
-use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkey};
+use solana_readonly_account::{ReadonlyAccountData, ReadonlyAccountOwner, ReadonlyAccountPubkeyBytes};
 use spl_calculator_interface::{AccountType, SplStakePool};
 
 use crate::{SanctumSplMultiSolValCalc, SanctumSplSolValCalc, SplSolValCalc};
@@ -67,8 +67,8 @@ pub struct SplLstSolCommonFreeArgs<S, Q> {
 }
 
 impl<
-        S: ReadonlyAccountPubkey + ReadonlyAccountData + ReadonlyAccountOwner,
-        Q: ReadonlyAccountPubkey + ReadonlyAccountData,
+        S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData + ReadonlyAccountOwner,
+        Q: ReadonlyAccountPubkeyBytes + ReadonlyAccountData,
     > SplLstSolCommonFreeArgs<S, Q>
 {
     pub fn resolve_spl(
@@ -118,7 +118,7 @@ pub struct SplLstSolCommonFreeArgsConst<S> {
     pub spl_stake_pool: S,
 }
 
-impl<S: ReadonlyAccountPubkey + ReadonlyAccountData + ReadonlyAccountOwner>
+impl<S: ReadonlyAccountPubkeyBytes + ReadonlyAccountData + ReadonlyAccountOwner>
     SplLstSolCommonFreeArgsConst<S>
 {
     pub fn resolve_spl(self) -> Result<LstSolCommonIntermediateKeys, GenericPoolCalculatorError> {
