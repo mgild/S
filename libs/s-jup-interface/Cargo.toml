@@ -25,6 +25,7 @@ solana-sdk = { workspace = true }
 solana-readonly-account = { workspace = true, features = ["solana-sdk"] }
 spl-calculator-lib = { workspace = true }
 wsol-calculator-lib = { workspace = true }
+ahash = { workspace = true }
 
 [dev-dependencies]
 async-trait = { workspace = true }
