@@ -4,9 +4,28 @@ use s_controller_interface::LstState;
 use s_controller_lib::{try_lst_state_list, try_pool_state};
 use s_pricing_prog_aggregate::MutablePricingProg;
 use s_sol_val_calc_prog_aggregate::{LstSolValCalc, MutableLstSolValCalc};
-use sanctum_token_lib::{mint_supply, token_account_balance};
+// use sanctum_token_lib::{mint_supply, token_account_balance};
 use solana_readonly_account::ReadonlyAccountData;
-use solana_sdk::pubkey::Pubkey;
+use solana_program::{program_error::ProgramError, pubkey::Pubkey};
+use spl_token_2022::extension::StateWithExtensions;
+
+
+pub fn token_account_balance<D: ReadonlyAccountData>(
+    token_account: D,
+) -> Result<u64, ProgramError> {
+    let data = token_account.data();
+    let state = StateWithExtensions::<spl_token_2022::state::Account>::unpack(&data)?;
+    Ok(state.base.amount)
+}
+
+/// Deserializes the account, so it's more efficient to keep a
+/// fully deserialized instance around instead of using this fn
+/// if you're gonna be needing the other fields
+pub fn mint_supply<D: ReadonlyAccountData>(mint_account: D) -> Result<u64, ProgramError> {
+    let data = mint_account.data();
+    let state = StateWithExtensions::<spl_token_2022::state::Mint>::unpack(&data)?;
+    Ok(state.base.supply)
+}
 
 use crate::{utils::try_pricing_prog, LstData, SPool};
 

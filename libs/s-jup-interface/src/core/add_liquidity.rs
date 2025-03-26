@@ -79,6 +79,7 @@ impl<S: ReadonlyAccountData, L: ReadonlyAccountData> SPool<S, L> {
             fee_mint: *input_mint,
             fee_amount,
             fee_pct,
+            ..Default::default()
         })
     }
 
