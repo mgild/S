@@ -10,7 +10,7 @@ use spl_calculator_interface::{AccountType, SplStakePool};
 
 use crate::{SanctumSplMultiSolValCalc, SanctumSplSolValCalc, SplSolValCalc};
 
-pub fn deserialize_spl_stake_pool_checked<S: ReadonlyAccountData + ReadonlyAccountOwnerBytes>(
+pub fn deserialize_spl_stake_pool_checked<S: ReadonlyAccountData + ReadonlyAccountOwnerBytes + ReadonlyAccountOwnerBytes>(
     spl_stake_pool: S,
 ) -> Result<SplStakePool, GenericPoolCalculatorError> {
     deserialize_stake_pool_check_program_owner(spl_stake_pool, SplSolValCalc::POOL_PROGRAM_ID)

@@ -1,4 +1,6 @@
 use generic_pool_calculator_interface::GenericPoolCalculatorError;
+use solana_readonly_account::ReadonlyAccountOwnerBytes;
+use solana_readonly_account::ReadonlyAccountPubkeyBytes;
 use generic_pool_calculator_lib::account_resolvers::LstSolCommonIntermediateKeys;
 use sanctum_token_ratio::U64ValueRange;
 use sol_value_calculator_lib::SolValueCalculator;
@@ -27,11 +29,11 @@ impl SanctumSplLstSolValCalc {
         Self(SplLstSolValCalc::from_keys(keys, shared_current_epoch))
     }
 
-    pub fn from_pool<P: ReadonlyAccountData + ReadonlyAccountPubkey + ReadonlyAccountOwner>(
+    pub fn from_pool<P: ReadonlyAccountData + ReadonlyAccountOwnerBytes + ReadonlyAccountPubkey + ReadonlyAccountPubkeyBytes + ReadonlyAccountOwner>(
         pool_acc: P,
         shared_current_epoch: Arc<AtomicU64>,
     ) -> Result<Self, GenericPoolCalculatorError> {
-        let stake_pool_addr = *pool_acc.pubkey();
+        let stake_pool_addr = pool_acc.pubkey();
         let pool = deserialize_sanctum_spl_stake_pool_checked(pool_acc)?;
         Ok(Self(SplLstSolValCalc {
             lst_mint: pool.pool_mint,

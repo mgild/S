@@ -12,7 +12,7 @@ generic-pool-calculator-lib = { workspace = true }
 sanctum-token-ratio = { workspace = true }
 sol_value_calculator_interface = { workspace = true }
 solana-program = { workspace = true }
-solana-readonly-account = { workspace = true }
+solana-readonly-account = { workspace = true, features = ["solana-pubkey"] }
 sol-value-calculator-lib = { workspace = true }
 
 # lido

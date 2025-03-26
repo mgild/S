@@ -4044,7 +4044,7 @@ dependencies = [
 [[package]]
 name = "sanctum-associated-token-lib"
 version = "0.1.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "solana-program 1.18.26",
  "solana-readonly-account",
@@ -4079,7 +4079,7 @@ dependencies = [
 [[package]]
 name = "sanctum-misc-utils"
 version = "0.1.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "borsh 1.5.7",
  "solana-program 1.18.26",
@@ -4099,7 +4099,7 @@ dependencies = [
 [[package]]
 name = "sanctum-solana-test-utils"
 version = "0.1.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "async-trait",
  "bincode",
@@ -4181,7 +4181,7 @@ dependencies = [
 [[package]]
 name = "sanctum-system-program-lib"
 version = "0.1.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "solana-program 1.18.26",
  "solana-readonly-account",
@@ -4191,7 +4191,7 @@ dependencies = [
 [[package]]
 name = "sanctum-token-lib"
 version = "0.1.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "solana-program 1.18.26",
  "solana-readonly-account",
@@ -4201,7 +4201,7 @@ dependencies = [
 [[package]]
 name = "sanctum-token-ratio"
 version = "0.2.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "borsh 1.5.7",
  "num-traits",
@@ -5761,7 +5761,7 @@ dependencies = [
 [[package]]
 name = "solana-readonly-account"
 version = "2.0.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "solana-program 1.18.26",
  "solana-sdk",
@@ -6922,7 +6922,7 @@ dependencies = [
 [[package]]
 name = "spl_associated_token_account_interface"
 version = "2.0.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "borsh 1.5.7",
  "num-derive 0.4.2",
@@ -6946,7 +6946,7 @@ dependencies = [
 [[package]]
 name = "spl_token_interface"
 version = "4.0.0"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "borsh 1.5.7",
  "num-derive 0.4.2",
@@ -7094,7 +7094,7 @@ dependencies = [
 [[package]]
 name = "system_program_interface"
 version = "1.17.13"
-source = "git+https://github.com/mgild/sanctum-solana-utils.git#699033835dc7e8038cda5d052521213b66ce48ef"
+source = "git+https://github.com/mgild/sanctum-solana-utils.git#3861ed3dd192bfcd4ff0a7cfc3973623f178a7a1"
 dependencies = [
  "serde",
  "solana-program 1.18.26",
