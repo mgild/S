@@ -22,4 +22,3 @@ spl-token = { workspace = true, features = ["no-entrypoint"] }
 spl-token-metadata-interface = { workspace = true }
 static_assertions = { workspace = true }
 ahash = { workspace = true }
-spl-associated-token-account = "<3"
